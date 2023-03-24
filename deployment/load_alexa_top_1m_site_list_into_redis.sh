@@ -6,7 +6,9 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 REDIS_QUEUE_NAME="$1"
-MAX_RANK="$2"
+START_POS="$2"
+NUMBER_ELEMS="$3"
+REDIS_HOST="$4"
 
 echo -e "\nAttempting to clean up any leftover lists from a previous run..."
 rm top-1m.csv.zip* || true
@@ -16,13 +18,15 @@ echo -e "\nDownloading and unzipping site list..."
 wget http://s3.amazonaws.com/alexa-static/top-1m.csv.zip
 unzip -o top-1m.csv.zip
 
-if [[ -n "$MAX_RANK" ]]; then
-  echo Limiting site list to the top $MAX_RANK items...
-  head -n $MAX_RANK top-1m.csv > temp.csv
+if [[ -n "$START_POS" ]]; then
+  echo "NUMBER_ELEMS = $NUMBER_ELEMS"
+  echo "START_POS = $START_POS"
+  tail -n +"$START_POS" top-1m.csv | head -n "$NUMBER_ELEMS" > temp.csv
+#  head -n $MAX_RANK top-1m.csv > temp.csv
   mv temp.csv top-1m.csv
 fi
 
-./load_site_list_into_redis.sh $REDIS_QUEUE_NAME top-1m.csv
+./load_site_list_into_redis.sh "$REDIS_QUEUE_NAME" top-1m.csv "$REDIS_HOST"
 
 echo -e "\nCleaning up..."
 rm top-1m.csv.zip

@@ -12,10 +12,10 @@ gcloud container clusters create $CLUSTER_NAME \
 --zone us-central1-f \
 --enable-stackdriver-kubernetes \
 --labels='app=openwpm' \
---machine-type=n1-highcpu-16 \
+--machine-type=n1-highcpu-8 \
 --num-nodes=1 \
 --min-nodes=0 \
---max-nodes=30 \
+--max-nodes=1 \
 --enable-autoscaling \
 --enable-ip-alias \
 --scopes storage-rw \

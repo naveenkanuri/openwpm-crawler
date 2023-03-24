@@ -2,11 +2,11 @@
 set -e
 
 
-if [[ "$REDIS_HOST" == "" ]] && [[ "$REDIS_CONTAINER" == "" ]]; then
-    echo "The env var REDIS_HOST needs to be set with the IP/hostname of the managed Redis instance" >&2
-    echo "Assuming we are testing locally and setting REDIS_HOST to localhost." >&2
-    REDIS_HOST="localhost"
-fi
+#if [[ "$REDIS_HOST" == "" ]] && [[ "$REDIS_CONTAINER" == "" ]]; then
+#    echo "The env var REDIS_HOST needs to be set with the IP/hostname of the managed Redis instance" >&2
+#    echo "Assuming we are testing locally and setting REDIS_HOST to localhost." >&2
+#    REDIS_HOST="localhost"
+#fi
 
 if [[ $# -lt 2 ]]; then
     echo "Usage: load_site_list_into_redis.sh redis_queue_name site_list_csv" >&2
@@ -14,6 +14,7 @@ if [[ $# -lt 2 ]]; then
 fi
 REDIS_QUEUE_NAME="$1"
 SITE_LIST_CSV="$2"
+REDIS_HOST="$3"
 
 echo -e "\nEnqueuing site list in redis"
 
